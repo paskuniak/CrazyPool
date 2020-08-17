@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        ZeroSpeed();
     }
 
     private void Update()
@@ -43,4 +45,8 @@ public class PlayerController : MonoBehaviour
         zSpeed = Config.StartSpeed;
     }
 
+    internal void ZeroSpeed()
+    {
+        zSpeed = 0;
+    }
 }

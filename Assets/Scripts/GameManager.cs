@@ -12,6 +12,8 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
 
+    public Cue cue; 
+
     private const float BombRollSpeed = 30;
 
     [SerializeField] 
@@ -139,13 +141,18 @@ public class GameManager : MonoBehaviour
 
     internal void StartGame()
     {
+        cue.Shoot(OnHit);
         gameState = GameState.Game;
         uiManager.SetState(gameState);
+        SFXPlayer.PlayClip(SFX.Go);
+        MusicPlayer.SetFilterActive(false);
+    }
+
+    private void OnHit()
+    {
         player.ResetSpeed();
         timer.StartTimer();
         SpawnObjects();
-        SFXPlayer.PlayClip(SFX.Go);
-        MusicPlayer.SetFilterActive(false);
     }
 
     internal void EndGame(bool explosion = false)
@@ -155,7 +162,7 @@ public class GameManager : MonoBehaviour
             cameraController.Shake(Intensity.Extreme);
         }
         gameState = GameState.Menu;
-        player.ResetSpeed();
+        player.ZeroSpeed();
         uiManager.EndGame();
         timer.CancelTimer();
         MusicPlayer.SetFilterActive(true);
